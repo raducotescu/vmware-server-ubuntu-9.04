@@ -61,13 +61,15 @@ check_archive() {
 }
 
 install() {
-	echo "Downloading patch file..."
-	wget http://codebin.cotescu.com/vmware/$PATCH -O "$VMWARE_HOME/$PATCH" 2> /dev/null
-	echo "Checking patch download..."
+	echo "Checking patch existence..."
 	if [ ! -r "$VMWARE_HOME/$PATCH" ]; then
-		echo "The download of $PATCH from http://codebin.cotescu.com/vmware/ failed!"
-		echo "Check your internet connection. :("
-		exit 1
+        echo "Downloading patch file..."
+    	wget http://codebin.cotescu.com/vmware/$PATCH -O "$VMWARE_HOME/$PATCH"
+        if [ $? != 0 ]; then
+    		echo "The download of $PATCH from http://codebin.cotescu.com/vmware/ failed!"
+		    echo "Check your internet connection. :("
+    		exit 1
+        fi
 	fi
 	LINUX_HEADERS="linux-headers-`uname -r`"
 	check=`dpkg-query -W -f='${Status} ${Version}\n' $LINUX_HEADERS 2> /dev/null | egrep "^install"`
