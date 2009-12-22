@@ -2,7 +2,6 @@
 
 ###############################################################################
 # @author Radu Cotescu                                                        #
-# @version 1.1 Thu Oct 22 22:45:20 EEST 2009                                  #
 #                                                                             #
 # For further details visit:                                                  #
 #   http://radu.cotescu.com/?p=505                                            #
