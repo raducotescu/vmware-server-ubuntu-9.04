@@ -15,7 +15,7 @@
 ###############################################################################
 
 VMWARE_HOME=$1
-PATCH=vmware-config-patch.txt
+PATCH="vmware-config.patch"
 
 display_usage() {
 	echo "This script must be run with super-user privileges."
