@@ -15,6 +15,7 @@
 ###############################################################################
 
 VMWARE_HOME=$1
+DIR_NAME=`dirname $0`
 PATCH="vmware-config.patch"
 
 display_usage() {
@@ -60,15 +61,10 @@ check_archive() {
 }
 
 install() {
-	echo "Checking patch existence..."
-	if [ ! -r "$VMWARE_HOME/$PATCH" ]; then
-        echo "Downloading patch file..."
-    	wget http://codebin.cotescu.com/vmware/$PATCH -O "$VMWARE_HOME/$PATCH"
-        if [ $? != 0 ]; then
-    		echo "The download of $PATCH from http://codebin.cotescu.com/vmware/ failed!"
-		    echo "Check your internet connection. :("
-    		exit 1
-        fi
+	if [ ! -r "$DIR_NAME/$PATCH" ]; then
+   		echo "File $DIR_NAME/$PATCH is not found!"
+	    echo "Did you delete it?"
+   		exit 1
 	fi
 	LINUX_HEADERS="linux-headers-`uname -r`"
 	check=`dpkg-query -W -f='${Status} ${Version}\n' $LINUX_HEADERS 2> /dev/null | egrep "^install"`
@@ -81,13 +77,13 @@ install() {
 		echo Extracting the contents of $VMWARE_ARCHIVE
 		tar zxf "$VMWARE_HOME/$VMWARE_ARCHIVE" -C "$VMWARE_HOME"
 	fi
-	patch "$VMWARE_HOME/vmware-server-distrib/bin/vmware-config.pl" "$VMWARE_HOME/$PATCH"
+	patch "$VMWARE_HOME/vmware-server-distrib/bin/vmware-config.pl" "$DIR_NAME/$PATCH"
 	$VMWARE_HOME/vmware-server-distrib/vmware-install.pl
 }
 
 clean() {
 	echo "Housekeeping..."
-	rm -rf "$VMWARE_HOME/vmware-server-distrib" "$VMWARE_HOME/$PATCH"
+	rm -rf "$VMWARE_HOME/vmware-server-distrib"
 	echo "Thank you for using the script!"
 	echo "Author: Radu Cotescu"
 	echo "http://radu.cotescu.com"
